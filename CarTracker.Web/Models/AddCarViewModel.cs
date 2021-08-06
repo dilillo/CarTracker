@@ -2,7 +2,7 @@
 
 namespace CarTracker.Web.Models
 {
-    public class CreateCarViewModel
+    public class AddCarViewModel
     {
         [Required]
         [MaxLength(50)]

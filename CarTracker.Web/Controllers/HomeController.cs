@@ -1,27 +1,22 @@
-﻿using CarTracker.Domain.Commands;
+﻿using System;
+using System.Diagnostics;
+using System.Text.Json;
+using System.Threading.Tasks;
+using CarTracker.Domain.Commands;
 using CarTracker.Domain.Events;
 using CarTracker.Domain.Queries;
 using CarTracker.Web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace CarTracker.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IMediator _mediator;
 
-        public HomeController(ILogger<HomeController> logger, IMediator mediator)
+        public HomeController(IMediator mediator)
         {
-            _logger = logger;
             _mediator = mediator;
         }
 
@@ -44,16 +39,16 @@ namespace CarTracker.Web.Controllers
             return View(model);
         }
 
-        public ActionResult Create()
+        public ActionResult AddCar()
         {
-            var model = new CreateCarViewModel();
+            var model = new AddCarViewModel();
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CreateCarViewModel createCarViewModel)
+        public async Task<ActionResult> AddCar(AddCarViewModel createCarViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -85,6 +80,130 @@ namespace CarTracker.Web.Controllers
                 return View(createCarViewModel);
             }
         }
+
+        public ActionResult ChangeOil()
+        {
+            var model = new ChangeOilViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeOil(ChangeOilViewModel changeOilViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(changeOilViewModel);
+            }
+
+            try
+            {
+                var cmd = new ChangeOilCommand
+                {
+                    ID = changeOilViewModel.ID,
+                    Charge = changeOilViewModel.Charge,
+                    Mileage = changeOilViewModel.Mileage
+                };
+
+                var events = await _mediator.Send(cmd);
+
+                var serializedPendingDomainEvents = JsonSerializer.Serialize(events);
+
+                TempData.Add("PendingDomainEvents", serializedPendingDomainEvents);
+
+                return RedirectToAction("Details", "Home", new { id = cmd.ID });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+
+                return View(changeOilViewModel);
+            }
+        }
+
+        public ActionResult InspectBrakes()
+        {
+            var model = new ChangeOilViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> InspectBrakesOil(InspectBrakesViewModel inspectBrakesViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(inspectBrakesViewModel);
+            }
+
+            try
+            {
+                var cmd = new InspectBrakesCommand
+                {
+                    ID = inspectBrakesViewModel.ID,
+                    Mileage = inspectBrakesViewModel.Mileage,
+                    RemainingPad = inspectBrakesViewModel.RemainingPad
+                };
+
+                var events = await _mediator.Send(cmd);
+
+                var serializedPendingDomainEvents = JsonSerializer.Serialize(events);
+
+                TempData.Add("PendingDomainEvents", serializedPendingDomainEvents);
+
+                return RedirectToAction("Details", "Home", new { id = cmd.ID });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+
+                return View(inspectBrakesViewModel);
+            }
+        }
+
+        public ActionResult ReplaceTires()
+        {
+            var model = new ChangeOilViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ReplaceTires(ReplaceTiresViewModel replaceTiresViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(replaceTiresViewModel);
+            }
+
+            try
+            {
+                var cmd = new ReplaceTiresCommand
+                {
+                    ID = replaceTiresViewModel.ID,
+                    Charge = replaceTiresViewModel.Charge,
+                    NumberOfTiresReplaced = replaceTiresViewModel.NumberOfTiresReplaced
+                };
+
+                var events = await _mediator.Send(cmd);
+
+                var serializedPendingDomainEvents = JsonSerializer.Serialize(events);
+
+                TempData.Add("PendingDomainEvents", serializedPendingDomainEvents);
+
+                return RedirectToAction("Details", "Home", new { id = cmd.ID });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+
+                return View(replaceTiresViewModel);
+            }
+        }
+
         public IActionResult Privacy()
         {
             return View();

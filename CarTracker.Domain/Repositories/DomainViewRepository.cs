@@ -20,7 +20,7 @@ namespace CarTracker.Domain.Repositories
     public class DomainViewRepository : IDomainViewRepository
     {
         private const string ContainerID = "views";
-        private const string DatabaseID = "worldtracker";
+        private const string DatabaseID = "carTracker";
 
         protected string _connectionString;
 
@@ -28,9 +28,9 @@ namespace CarTracker.Domain.Repositories
         {
         }
 
-        public DomainViewRepository(IOptions<CarTrackerOptions> worldTrackerOptions) : this()
+        public DomainViewRepository(IOptions<CarTrackerOptions> carTrackerOptions) : this()
         {
-            _connectionString = worldTrackerOptions.Value.CosmosDBConnectionString;
+            _connectionString = carTrackerOptions.Value.CosmosDBConnectionString;
         }
 
         public async Task<DomainView> GetByID(string viewID, CancellationToken cancellationToken)

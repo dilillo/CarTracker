@@ -1,13 +1,14 @@
+using CarTracker.Domain.Aggregates;
+using CarTracker.Domain.Commands;
+using CarTracker.Domain.Configuration;
+using CarTracker.Domain.Projectors;
+using CarTracker.Domain.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CarTracker.Web
 {
@@ -23,7 +24,27 @@ namespace CarTracker.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services
+               .AddOptions<CarTrackerOptions>()
+               .Configure<IConfiguration>((settings, configuration) =>
+               {
+                   configuration.Bind(nameof(CarTrackerOptions), settings);
+               });
+
+            services.AddControllersWithViews()
+                .AddSessionStateTempDataProvider();
+
+            services.AddSession();
+
+            services.AddOptions();
+
+            services.AddMediatR(typeof(AddCarCommand));
+
+            services.AddTransient<IDomainEventRepository, DomainEventRepository>();
+            services.AddTransient<IDomainViewRepository, DomainViewRepository>();
+            services.AddTransient<IGetCarByIDViewProjector, GetCarByIDViewProjector>();
+            services.AddTransient<IGetAllCarsViewProjector, GetAllCarsViewProjector>();
+            services.AddTransient<ICarAggregate, CarAggregate>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +65,7 @@ namespace CarTracker.Web
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
