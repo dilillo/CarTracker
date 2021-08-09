@@ -96,6 +96,21 @@ namespace CarTracker.Domain.Projectors
             {
                 existingCarToUpdate.LastServiced = domainEvent.FiredAtDateTimeUtc;
             }
+
+            switch (domainEvent)
+            {
+                case OilChangedEvent oilChangedEvent:
+
+                    domainView.TotalCharges += oilChangedEvent.Charge;
+
+                    break;
+
+                case TiresReplacedEvent tiresReplacedEvent:
+
+                    domainView.TotalCharges += tiresReplacedEvent.Charge;
+
+                    break;
+            }
         }
 
         private static void ApplyNewOwnerEvent(GetAllCarsView domainView, NewOwnerEvent newOwnerEvent)

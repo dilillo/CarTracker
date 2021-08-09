@@ -47,6 +47,12 @@
             @Html.DisplayFor(model => model.GetCarByIDView.Car.RemainingPad)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GetCarByIDView.Car.TotalCharges)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.GetCarByIDView.Car.TotalCharges.ToString("c")
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Events)
         </dt>
         <dd class="col-sm-10">

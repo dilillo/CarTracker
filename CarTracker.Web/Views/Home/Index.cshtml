@@ -5,7 +5,8 @@
 }
 
 <h1>Cars</h1>
-<h2>@Model.TotalCharges</h2>
+
+<h4>Charged @Model.TotalCharges.ToString("c") on @Model.Cars.Count car(s)</h4>
 
 <p>
     <a asp-action="AddCar">Add Car</a>
