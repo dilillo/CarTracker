@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarTracker.Domain.Views
 {
@@ -28,10 +29,13 @@ namespace CarTracker.Domain.Views
 
         public int Mileage { get; set; }
 
+        [Display(Name = "Total Charges")]
         public decimal TotalCharges { get; set; }
 
+        [Display(Name = "Last Oil Change")]
         public DateTimeOffset? LastOilChange { get; set; }
 
+        [Display(Name = "Remaining Pad")]
         public double RemainingPad { get; set; }
     }
 }

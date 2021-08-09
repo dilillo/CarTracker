@@ -16,7 +16,7 @@ namespace CarTracker.Projector
     {
         [FunctionName("GetAllCarsViewProjectorFunction")]
         public static async Task Run([CosmosDBTrigger(
-            databaseName: "cartracker",
+            databaseName: "carTracker",
             collectionName: "events",
             ConnectionStringSetting = "CarTrackerOptions:CosmosDBConnectionString",
             LeaseCollectionName = "leases",

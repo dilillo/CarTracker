@@ -1,0 +1,80 @@
+﻿@model CarTracker.Domain.Queries.GetCarByIDQueryResult
+
+@{
+    ViewData["Title"] = "Car Details";
+}
+
+<h1>Car Details</h1>
+
+<div>
+    @Html.ActionLink("New Owner", "NewOwner", new { id = Model.GetCarByIDView.Car.ID }) |
+    @Html.ActionLink("Change Oil", "ChangeOil", new { id = Model.GetCarByIDView.Car.ID }) |
+    @Html.ActionLink("Inspect Brakes", "InspectBrakes", new { id = Model.GetCarByIDView.Car.ID }) |
+    @Html.ActionLink("Replace Tires", "ReplaceTires", new { id = Model.GetCarByIDView.Car.ID }) |
+    <a asp-action="Index">Back to Cars</a>
+</div>
+<br />
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GetCarByIDView.Car.Make)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GetCarByIDView.Car.Make)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GetCarByIDView.Car.Model)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GetCarByIDView.Car.Model)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GetCarByIDView.Car.Owner)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GetCarByIDView.Car.Owner)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GetCarByIDView.Car.LastOilChange)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.GetCarByIDView.Car.LastOilChange?.ToLocalTime().ToString("g")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GetCarByIDView.Car.RemainingPad)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GetCarByIDView.Car.RemainingPad)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Events)
+        </dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Datetime
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Events)
+                    {
+                        <tr>
+                            <td>
+                                @item.FiredAtDateTimeUtc.ToLocalTime().ToString("g")
+                            </td>
+                            <td>
+                                @item.GetType().Name.Replace("Event", "")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+</div>

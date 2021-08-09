@@ -14,8 +14,6 @@
     <thead>
         <tr>
             <th>
-            </th>
-            <th>
                 Make
             </th>
             <th>
@@ -44,10 +42,10 @@
                     @Html.DisplayFor(modelItem => item.Owner)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastServiced)
+                    @item.LastServiced?.ToLocalTime().ToString("g")
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID })
                 </td>
             </tr>
         }

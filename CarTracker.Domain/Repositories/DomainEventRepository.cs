@@ -3,6 +3,7 @@ using CarTracker.Domain.Events;
 using CarTracker.Domain.Views;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -22,7 +23,7 @@ namespace CarTracker.Domain.Repositories
     public class DomainEventRepository : IDomainEventRepository
     {
         private const string ContainerID = "events";
-        private const string DatabaseID = "cartracker";
+        private const string DatabaseID = "carTracker";
 
         private readonly string _connectionString;
 
@@ -134,7 +135,12 @@ namespace CarTracker.Domain.Repositories
                 {
                     var wrappedEvent = new DomainEventWrapper(@event);
 
-                    await container.CreateItemAsync(wrappedEvent, partitionKey, cancellationToken: cancellationToken);
+                    var itemResponse = await container.CreateItemAsync(wrappedEvent, partitionKey, cancellationToken: cancellationToken);
+
+                    if (itemResponse.StatusCode !=  System.Net.HttpStatusCode.Created)
+                    {
+                        throw new Exception("Failed to save event to the datastore: " + itemResponse.StatusCode);
+                    }
                 }
             }
         }

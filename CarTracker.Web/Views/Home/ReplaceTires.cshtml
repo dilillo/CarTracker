@@ -1,0 +1,44 @@
+﻿@model CarTracker.Domain.Commands.ReplaceTiresCommand
+
+@{
+    ViewData["Title"] = "Replace Tires";
+}
+
+<h1>Replace Tires</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ReplaceTires">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="ID" type="hidden" />
+            <div class="form-group">
+                <label asp-for="NumberOfTiresReplaced" class="control-label"></label>
+                <input asp-for="NumberOfTiresReplaced" class="form-control" />
+                <span asp-validation-for="NumberOfTiresReplaced" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Charge" class="control-label"></label>
+                <input asp-for="Charge" class="form-control" />
+                <span asp-validation-for="Charge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @Html.ActionLink("Cancel", "Details", new { id = Model.ID }, new { @class = "btn btn-secondary" })
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+
+        $('.custom-file-input').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+
+    </script>
+}

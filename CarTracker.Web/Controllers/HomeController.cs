@@ -1,13 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using System.Text.Json;
-using System.Threading.Tasks;
-using CarTracker.Domain.Commands;
+﻿using CarTracker.Domain.Commands;
 using CarTracker.Domain.Events;
 using CarTracker.Domain.Queries;
 using CarTracker.Web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Diagnostics;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace CarTracker.Web.Controllers
 {
@@ -41,166 +41,178 @@ namespace CarTracker.Web.Controllers
 
         public ActionResult AddCar()
         {
-            var model = new AddCarViewModel();
+            var model = new AddCarCommand();
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddCar(AddCarViewModel createCarViewModel)
+        public async Task<ActionResult> AddCar(AddCarCommand command)
         {
             if (!ModelState.IsValid)
             {
-                return View(createCarViewModel);
+                return View(command);
             }
 
             try
             {
-                var cmd = new AddCarCommand
-                {
-                    ID = Guid.NewGuid().ToString(),
-                    Make = createCarViewModel.Make,
-                    Model = createCarViewModel.Model,
-                    Owner = createCarViewModel.Owner
-                };
+                command.ID = Guid.NewGuid().ToString();
 
-                var events = await _mediator.Send(cmd);
+                var events = await _mediator.Send(command);
 
                 var serializedPendingDomainEvents = JsonSerializer.Serialize(events);
 
+                TempData.Clear();
                 TempData.Add("PendingDomainEvents", serializedPendingDomainEvents);
 
-                return RedirectToAction("Details", "Home", new { id = cmd.ID });
+                return RedirectToAction("Details", "Home", new { id = command.ID });
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
 
-                return View(createCarViewModel);
+                return View(command);
             }
         }
 
-        public ActionResult ChangeOil()
+        public ActionResult ChangeOil(string id)
         {
-            var model = new ChangeOilViewModel();
+            var model = new ChangeOilCommand { ID = id };
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangeOil(ChangeOilViewModel changeOilViewModel)
+        public async Task<ActionResult> ChangeOil(ChangeOilCommand command)
         {
             if (!ModelState.IsValid)
             {
-                return View(changeOilViewModel);
+                return View(command);
             }
 
             try
             {
-                var cmd = new ChangeOilCommand
-                {
-                    ID = changeOilViewModel.ID,
-                    Charge = changeOilViewModel.Charge,
-                    Mileage = changeOilViewModel.Mileage
-                };
-
-                var events = await _mediator.Send(cmd);
+                var events = await _mediator.Send(command);
 
                 var serializedPendingDomainEvents = JsonSerializer.Serialize(events);
 
+                TempData.Clear();
                 TempData.Add("PendingDomainEvents", serializedPendingDomainEvents);
 
-                return RedirectToAction("Details", "Home", new { id = cmd.ID });
+                return RedirectToAction("Details", "Home", new { id = command.ID });
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
 
-                return View(changeOilViewModel);
+                return View(command);
             }
         }
 
-        public ActionResult InspectBrakes()
+        public ActionResult NewOwner(string id)
         {
-            var model = new ChangeOilViewModel();
+            var model = new NewOwnerCommand { ID = id };
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> InspectBrakesOil(InspectBrakesViewModel inspectBrakesViewModel)
+        public async Task<ActionResult> NewOwner(NewOwnerCommand newOwnerCommand)
         {
             if (!ModelState.IsValid)
             {
-                return View(inspectBrakesViewModel);
+                return View(newOwnerCommand);
             }
 
             try
             {
-                var cmd = new InspectBrakesCommand
-                {
-                    ID = inspectBrakesViewModel.ID,
-                    Mileage = inspectBrakesViewModel.Mileage,
-                    RemainingPad = inspectBrakesViewModel.RemainingPad
-                };
-
-                var events = await _mediator.Send(cmd);
+                var events = await _mediator.Send(newOwnerCommand);
 
                 var serializedPendingDomainEvents = JsonSerializer.Serialize(events);
 
+                TempData.Clear();
                 TempData.Add("PendingDomainEvents", serializedPendingDomainEvents);
 
-                return RedirectToAction("Details", "Home", new { id = cmd.ID });
+                return RedirectToAction("Details", "Home", new { id = newOwnerCommand.ID });
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
 
-                return View(inspectBrakesViewModel);
+                return View(newOwnerCommand);
             }
         }
 
-        public ActionResult ReplaceTires()
+        public ActionResult InspectBrakes(string id)
         {
-            var model = new ChangeOilViewModel();
+            var model = new InspectBrakesCommand { ID = id };
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ReplaceTires(ReplaceTiresViewModel replaceTiresViewModel)
+        public async Task<ActionResult> InspectBrakes(InspectBrakesCommand commmand)
         {
             if (!ModelState.IsValid)
             {
-                return View(replaceTiresViewModel);
+                return View(commmand);
             }
 
             try
             {
-                var cmd = new ReplaceTiresCommand
-                {
-                    ID = replaceTiresViewModel.ID,
-                    Charge = replaceTiresViewModel.Charge,
-                    NumberOfTiresReplaced = replaceTiresViewModel.NumberOfTiresReplaced
-                };
-
-                var events = await _mediator.Send(cmd);
+                var events = await _mediator.Send(commmand);
 
                 var serializedPendingDomainEvents = JsonSerializer.Serialize(events);
 
+                TempData.Clear();
                 TempData.Add("PendingDomainEvents", serializedPendingDomainEvents);
 
-                return RedirectToAction("Details", "Home", new { id = cmd.ID });
+                return RedirectToAction("Details", "Home", new { id = commmand.ID });
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
 
-                return View(replaceTiresViewModel);
+                return View(commmand);
+            }
+        }
+
+        public ActionResult ReplaceTires(string id)
+        {
+            var model = new ReplaceTiresCommand { ID = id };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ReplaceTires(ReplaceTiresCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(command);
+            }
+
+            try
+            {
+                var events = await _mediator.Send(command);
+
+                var serializedPendingDomainEvents = JsonSerializer.Serialize(events);
+
+                TempData.Clear();
+                TempData.Add("PendingDomainEvents", serializedPendingDomainEvents);
+
+                return RedirectToAction("Details", "Home", new { id = command.ID });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+
+                return View(command);
             }
         }
 

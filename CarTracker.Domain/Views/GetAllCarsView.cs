@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarTracker.Domain.Views
 {
@@ -10,6 +11,7 @@ namespace CarTracker.Domain.Views
             ID = DomainViewIDs.GetAllCarsView;
         }
 
+        [Display(Name = "Total Charges")]
         public decimal TotalCharges { get; set; }
 
         public List<GetAllCarsViewCar> Cars { get; set; } = new List<GetAllCarsViewCar>();
@@ -25,6 +27,7 @@ namespace CarTracker.Domain.Views
 
         public string Owner { get; set; }
 
+        [Display(Name = "Last Serviced")]
         public DateTimeOffset? LastServiced { get; set; }
     }
 }

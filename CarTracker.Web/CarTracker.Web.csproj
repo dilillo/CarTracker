@@ -13,4 +13,8 @@
     <ProjectReference Include="..\CarTracker.Domain\CarTracker.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>
