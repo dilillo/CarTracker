@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarTracker.Projector", "CarTracker.Projector\CarTracker.Projector.csproj", "{71BB93AC-F53D-4076-B2CB-BD72F844B417}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarTracker.Projector", "src\CarTracker.Projector\CarTracker.Projector.csproj", "{71BB93AC-F53D-4076-B2CB-BD72F844B417}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarTracker.Domain", "CarTracker.Domain\CarTracker.Domain.csproj", "{6A4CAB50-BAFF-4DA5-A19B-99711355AF84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarTracker.Domain", "src\CarTracker.Domain\CarTracker.Domain.csproj", "{6A4CAB50-BAFF-4DA5-A19B-99711355AF84}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarTracker.Web", "CarTracker.Web\CarTracker.Web.csproj", "{EC9B251D-1915-4C00-8E72-2B592E08B7AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarTracker.Web", "src\CarTracker.Web\CarTracker.Web.csproj", "{EC9B251D-1915-4C00-8E72-2B592E08B7AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
