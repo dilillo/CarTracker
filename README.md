@@ -19,7 +19,7 @@ At the end of the day the core concepts are very portable but individual impleme
 1. Open the solution in Visual Studio
 1. Update the src/CarTacker.Projector/local.settings.json with the appropriate value for `CarTrackerOptions:CosmosDBConnectionString`
 1. Update the src/CarTacker.Web/appsettings.Development.json with the appropriate value for `CarTrackerOptions:CosmosDBConnectionString`
-1. Configure the solution for multiple startup projects and select `CarTracker.Web` and `CarTracker`
+1. Configure the solution for multiple startup projects and select `CarTracker.Web` and `CarTracker.Projector`
 
 # Other Points of Interest
 
